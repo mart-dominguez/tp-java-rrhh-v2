@@ -65,17 +65,50 @@
         android:maxLength="5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
+    <ListView
+        android:id="@+id/lstPedidoItems"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnPedidoAddProducto"
+            android:text="Agregar Producto"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <Button
+            android:id="@+id/btnPedidoQuitarProducto"
+            android:text="Quitar Producto"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/lblTotalPedido"
+        android:text="Total del pedido: $0.00"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <Button
         android:id="@+id/btnPedidoHacerPedido"
         android:text="Hacer Pedido"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btnPedidoVolver"
         android:text="Volver"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </LinearLayout>
