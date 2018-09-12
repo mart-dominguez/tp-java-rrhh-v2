@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Pedido {
 
-    public enum Estado { REALIZADO, ACEPTADO,EN_PREPARACION,EN_ENVIO,ENTREGADO,CANCELADO}
+    public enum Estado { REALIZADO, ACEPTADO, RECHAZADO,EN_PREPARACION,LISTO,ENTREGADO,CANCELADO}
 
     private Integer id;
     private Date fecha;
