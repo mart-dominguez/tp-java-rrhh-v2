@@ -12,17 +12,17 @@ import ar.edu.utn.frsf.isi.dam.laboratorio02.modelo.Pedido;
 
     private Button btnNuevoPedido;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        btnNuevoPedido = (Button) findViewById(R.id.btnMainNuevoPedido);
-        btnNuevoPedido.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, PedidoActivity.class);
-                startActivity(i);
-            }
-        });
-    }
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_main);
+         btnNuevoPedido = (Button) findViewById(R.id.btnMainNuevoPedido);
+         btnNuevoPedido.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent i = new Intent(MainActivity.this, PedidoActivity.class);
+                 startActivity(i);
+             }
+         });
+     }
 }

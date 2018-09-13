@@ -14,7 +14,7 @@ import ar.edu.utn.frsf.isi.dam.laboratorio02.modelo.Producto;
 public class PedidoRepository {
 
     private static List<Pedido> LISTA_PEDIDOS = new ArrayList<>();
-    private static int GENERADOR_ID_PEDIDO = 0;
+    private static int GENERADOR_ID_PEDIDO = 1;
 
     public List<Pedido> getLista(){
         return LISTA_PEDIDOS;
@@ -27,6 +27,12 @@ public class PedidoRepository {
             p.setId(GENERADOR_ID_PEDIDO ++);
         }
         LISTA_PEDIDOS.add(p);
+    }
+
+    public void borrarPedido(Pedido p){
+        if(p.getId()!=null && p.getId()>0) {
+            LISTA_PEDIDOS.remove(p);
+        }
     }
 
     public Pedido buscarPorId(Integer id){

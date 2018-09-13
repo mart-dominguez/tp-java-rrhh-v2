@@ -2,12 +2,14 @@ package ar.edu.utn.frsf.isi.dam.laboratorio02.modelo;
 
 public class PedidoDetalle {
 
+    private static int ID_DETALLE =1;
     private Integer id;
     private Integer cantidad;
     private Producto producto;
     private Pedido pedido;
 
-    public PedidoDetalle(Integer id, Integer cantidad, Producto producto) {
+    public PedidoDetalle(Integer cantidad, Producto producto) {
+        id=ID_DETALLE++;
         this.cantidad = cantidad;
         this.producto = producto;
     }
