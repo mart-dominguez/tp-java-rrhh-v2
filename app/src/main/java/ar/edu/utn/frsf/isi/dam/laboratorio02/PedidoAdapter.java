@@ -48,11 +48,21 @@ public class PedidoAdapter extends ArrayAdapter<Pedido>{
                             pedidoSeleccionado.getEstado().equals(Pedido.Estado.EN_PREPARACION)){
                         pedidoSeleccionado.setEstado(Pedido.Estado.CANCELADO);
                         PedidoAdapter.this.notifyDataSetChanged();
+                        return;
                     }
                 }
             });
-
+            miHolder.btnVerDetalle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int  idPedido = (int) view.getTag();
+                    Intent intent = new Intent(ctx,PedidoActivity.class);
+                    intent.putExtra("idPedidoSeleccionado",idPedido);
+                    ctx.startActivity(intent );
+                }
+            });
             vistaResultado.setTag(miHolder);
+
         }
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Pedido pedidoActual = this.datos.get(position);
@@ -62,6 +72,9 @@ public class PedidoAdapter extends ArrayAdapter<Pedido>{
         miHolder.estado.setText("Estado: "+pedidoActual.getEstado().toString());
         switch (pedidoActual.getEstado()){
             case LISTO:
+                miHolder.estado.setTextColor(Color.DKGRAY);
+                break;
+            case ENTREGADO:
                 miHolder.estado.setTextColor(Color.BLUE);
                 break;
             case CANCELADO:
@@ -85,6 +98,7 @@ public class PedidoAdapter extends ArrayAdapter<Pedido>{
             miHolder.tipoEntrega.setImageResource(R.drawable.envio);
         }
         miHolder.btnCancelar.setTag(position);
+        miHolder.btnVerDetalle.setTag(pedidoActual.getId());
 
         return vistaResultado;
     }

@@ -35,6 +35,8 @@ public class PedidoActivity extends AppCompatActivity {
     private EditText edtDireccion;
     private EditText edtHoraEntrega;
     private RadioGroup optEnvio;
+    private RadioButton optEnviar;
+    private RadioButton optRetirar;
     private Button btnHacerPedido;
     private Button btnVolver;
     private Button btnAddProducto;
@@ -56,17 +58,35 @@ public class PedidoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pedido);
         repositorioPedido = new PedidoRepository();
         repositorioProducto = new ProductoRepository();
-        elPedido = new Pedido();
 
         edtCorreo = (EditText) findViewById(R.id.edtPedidoCorreo) ;
         edtDireccion = (EditText) findViewById(R.id.edtPedidoDireccion) ;
         edtHoraEntrega = (EditText) findViewById(R.id.edtPedidoHoraEntrega) ;
         optEnvio = (RadioGroup) findViewById(R.id.optPedidoModoEntrega);
+        optEnviar = (RadioButton) findViewById(R.id.optPedidoEnviar);
+        optRetirar = (RadioButton) findViewById(R.id.optPedidoRetira);
         btnHacerPedido = (Button) findViewById(R.id.btnPedidoHacerPedido);
         btnVolver = (Button) findViewById(R.id.btnPedidoVolver);
         btnAddProducto = (Button) findViewById(R.id.btnPedidoAddProducto);
         btnQuitarProducto = (Button) findViewById(R.id.btnPedidoQuitarProducto);
         lblTotalPedido = (TextView) findViewById(R.id.lblTotalPedido);
+
+        Intent intentLlamada = getIntent();
+        int idPedido = 0;
+        if(intentLlamada.getExtras()!=null){
+            idPedido = intentLlamada.getExtras().getInt("idPedidoSeleccionado");
+        }
+        if(idPedido>0){
+            elPedido = repositorioPedido.buscarPorId(idPedido);
+            edtCorreo.setText(elPedido.getMailContacto());
+            edtDireccion.setText(elPedido.getDireccionEnvio());
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            edtHoraEntrega.setText(sdf.format(elPedido.getFecha()));
+            optEnviar.setChecked(!elPedido.getRetirar());
+            optRetirar.setChecked(elPedido.getRetirar());
+        }else {
+            elPedido = new Pedido();
+        }
         detallePedidoAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_single_choice,elPedido.getDetalle());
         lista = (ListView) findViewById(R.id.lstPedidoItems);
         lista.setAdapter(detallePedidoAdapter);
@@ -112,6 +132,7 @@ public class PedidoActivity extends AppCompatActivity {
                 elPedido.setEstado(Pedido.Estado.REALIZADO);
 
                 repositorioPedido.guardarPedido(elPedido);
+                elPedido=new Pedido();
                 Intent i = new Intent(PedidoActivity.this,HistorialActivity.class);
                 startActivity(i);
             }

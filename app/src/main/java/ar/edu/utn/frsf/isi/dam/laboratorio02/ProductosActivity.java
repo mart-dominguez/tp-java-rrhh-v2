@@ -23,10 +23,12 @@ public class ProductosActivity extends AppCompatActivity {
     private ArrayAdapter<Producto> productosAdapter;
     private Spinner spinerCategorias;
     private ListView listaProductos;
-    private EditText cantidad;
+
+    private EditText edtCantidad;
     private Button btnAgregar;
     private Integer idProductoSel;
     private ProductoRepository productoRepo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +44,7 @@ public class ProductosActivity extends AppCompatActivity {
         listaProductos = (ListView) findViewById(R.id.lstProductos);
         listaProductos.setAdapter(productosAdapter);
 
-        cantidad = (EditText) findViewById(R.id.edtProdCantidad);
+        edtCantidad = (EditText) findViewById(R.id.edtProdCantidad);
         btnAgregar = (Button) findViewById(R.id.btnProdAddPedido);
         spinerCategorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -61,14 +63,14 @@ public class ProductosActivity extends AppCompatActivity {
         btnAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getCallingActivity()!=null) {
+                    int cantidad = Integer.valueOf(edtCantidad.getText().toString());
+                    if(cantidad<=0) return;
                     int pos = listaProductos.getCheckedItemPosition();
                     Intent i = new Intent();
-                    i.putExtra("cantidad", Integer.valueOf(cantidad.getText().toString()));
+                    i.putExtra("cantidad", cantidad);
                     i.putExtra("idProducto", productosAdapter.getItem(pos).getId());
                     setResult(Activity.RESULT_OK, i);
-                }
-                finish();
+                    finish();
             }
         });
     }

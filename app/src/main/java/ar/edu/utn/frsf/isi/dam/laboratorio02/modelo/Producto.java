@@ -74,7 +74,7 @@ public class Producto {
 
     @Override
     public String toString() {
-        return "("+categoria.getNombre()+")"+nombre+ "( $" + precio +")";
+        return nombre+ "( $" + precio +")";
 
     }
 
