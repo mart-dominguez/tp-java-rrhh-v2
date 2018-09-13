@@ -14,6 +14,8 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,6 +39,7 @@ public class PedidoActivity extends AppCompatActivity {
     private Button btnVolver;
     private Button btnAddProducto;
     private Button btnQuitarProducto;
+    private TextView lblTotalPedido;
     private ArrayAdapter<PedidoDetalle> detallePedidoAdapter;
     private ListView lista;
 
@@ -63,9 +66,11 @@ public class PedidoActivity extends AppCompatActivity {
         btnVolver = (Button) findViewById(R.id.btnPedidoVolver);
         btnAddProducto = (Button) findViewById(R.id.btnPedidoAddProducto);
         btnQuitarProducto = (Button) findViewById(R.id.btnPedidoQuitarProducto);
+        lblTotalPedido = (TextView) findViewById(R.id.lblTotalPedido);
         detallePedidoAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_single_choice,elPedido.getDetalle());
         lista = (ListView) findViewById(R.id.lstPedidoItems);
         lista.setAdapter(detallePedidoAdapter);
+
         optEnvio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -81,16 +86,34 @@ public class PedidoActivity extends AppCompatActivity {
                 GregorianCalendar hora = new GregorianCalendar();
                 int valorHora = Integer.valueOf(horaIngresada[0]);
                 int valorMinuto = Integer.valueOf(horaIngresada[1]);
-                hora.set(Calendar.HOUR,valorHora);
+                if(valorHora<0 || valorHora>23){
+                    Toast.makeText(PedidoActivity.this,"La hora ingresada ("+valorHora+" es incorrecta",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(valorMinuto <0 || valorMinuto >59){
+                    Toast.makeText(PedidoActivity.this,"Los minutos ingresados ("+valorMinuto+" es incorrecta",Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                hora.set(Calendar.HOUR_OF_DAY,valorHora);
                 hora.set(Calendar.MINUTE,valorMinuto);
                 hora.set(Calendar.SECOND,Integer.valueOf(0));
+                elPedido.setFecha(hora.getTime());
+
+                if(! (edtCorreo.getText()!=null && edtCorreo.getText().toString().length()>0) ){
+                    Toast.makeText(PedidoActivity.this,"El correo electronico es obligatorios",Toast.LENGTH_LONG).show();
+                    return;
+                }
                 elPedido.setMailContacto(edtCorreo.getText().toString());
+
                 elPedido.setRetirar(((RadioButton)optEnvio.findViewById(R.id.optPedidoRetira)).isChecked());
                 if(!elPedido.getRetirar()) elPedido.setDireccionEnvio(edtCorreo.getText().toString());
-                elPedido.setFecha(hora.getTime());
-                elPedido.setEstado(Pedido.Estado.ACEPTADO);
+                else elPedido.setDireccionEnvio("se retira en el local");
+                elPedido.setEstado(Pedido.Estado.REALIZADO);
+
                 repositorioPedido.guardarPedido(elPedido);
-                Log.d("APP_LAB02","Pedido "+elPedido.toString());
+                Intent i = new Intent(PedidoActivity.this,HistorialActivity.class);
+                startActivity(i);
             }
         });
 
@@ -115,9 +138,8 @@ public class PedidoActivity extends AppCompatActivity {
             Producto prd = repositorioProducto.buscarPorId(idProducto);
             PedidoDetalle detalle = new PedidoDetalle(cantidad,prd);
             detalle.setPedido(elPedido);
-            Log.d("APP_LAB02", "cantidad detalles "+elPedido.getDetalle().size());
             detallePedidoAdapter.notifyDataSetChanged();
-            Log.d("APP_LAB02", "cantidad detalles "+elPedido.getDetalle().size());
+            lblTotalPedido.setText("Total del pedido: $"+Math.round(elPedido.total()));
         }
     }
 }

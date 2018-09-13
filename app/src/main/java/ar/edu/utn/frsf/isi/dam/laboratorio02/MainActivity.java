@@ -10,7 +10,9 @@ import ar.edu.utn.frsf.isi.dam.laboratorio02.modelo.Pedido;
 
  public class MainActivity extends AppCompatActivity {
 
-    private Button btnNuevoPedido;
+     private Button btnNuevoPedido;
+     private Button btnHistorial;
+     private Button btnListaProductos;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +23,24 @@ import ar.edu.utn.frsf.isi.dam.laboratorio02.modelo.Pedido;
              @Override
              public void onClick(View view) {
                  Intent i = new Intent(MainActivity.this, PedidoActivity.class);
+                 startActivity(i);
+             }
+         });
+
+         btnHistorial = (Button) findViewById(R.id.btnHistorialPedidos);
+         btnHistorial.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent i = new Intent(MainActivity.this, HistorialActivity.class);
+                 startActivity(i);
+             }
+         });
+
+         btnListaProductos = (Button) findViewById(R.id.btnListaProductos);
+         btnListaProductos.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent i = new Intent(MainActivity.this, ProductosActivity.class);
                  startActivity(i);
              }
          });

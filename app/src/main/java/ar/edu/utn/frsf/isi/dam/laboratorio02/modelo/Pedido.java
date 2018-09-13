@@ -112,4 +112,12 @@ public class Pedido {
                 ", retirar=" + retirar +
                 '}';
     }
+
+    public Double total(){
+        Double total = 0.0;
+        for(PedidoDetalle det: detalle){
+            total+=det.getProducto().getPrecio()*det.getCantidad();
+        }
+        return total;
+    }
 }

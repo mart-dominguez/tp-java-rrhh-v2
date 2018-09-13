@@ -61,11 +61,13 @@ public class ProductosActivity extends AppCompatActivity {
         btnAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int pos = listaProductos.getCheckedItemPosition();
-                Intent i = new Intent();
-                i.putExtra("cantidad",Integer.valueOf(cantidad.getText().toString()));
-                i.putExtra("idProducto",productosAdapter.getItem(pos).getId());
-                setResult(Activity.RESULT_OK,i);
+                if(getCallingActivity()!=null) {
+                    int pos = listaProductos.getCheckedItemPosition();
+                    Intent i = new Intent();
+                    i.putExtra("cantidad", Integer.valueOf(cantidad.getText().toString()));
+                    i.putExtra("idProducto", productosAdapter.getItem(pos).getId());
+                    setResult(Activity.RESULT_OK, i);
+                }
                 finish();
             }
         });
