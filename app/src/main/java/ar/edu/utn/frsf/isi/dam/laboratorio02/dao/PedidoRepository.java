@@ -13,8 +13,8 @@ import ar.edu.utn.frsf.isi.dam.laboratorio02.modelo.Producto;
 
 public class PedidoRepository {
 
-    private static List<Pedido> LISTA_PEDIDOS = new ArrayList<>();
-    private static int GENERADOR_ID_PEDIDO = 1;
+    protected static List<Pedido> LISTA_PEDIDOS = new ArrayList<>();
+    protected static int GENERADOR_ID_PEDIDO = 1;
 
     public List<Pedido> getLista(){
         return LISTA_PEDIDOS;

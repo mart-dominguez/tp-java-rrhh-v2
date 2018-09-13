@@ -53,14 +53,10 @@ public class ProductoRepository {
     }
 
     public List<Producto> buscarPorCategoria(Categoria cat){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return LISTA_PRODUCTOS.stream().filter(p -> p.getCategoria().getId().equals(cat.getId())).collect(Collectors.toList());
-        }else{
             List<Producto> resultado = new ArrayList<>();
             for(Producto p:LISTA_PRODUCTOS){
                 if(p.getCategoria().getId().equals(cat.getId())) resultado.add(p);
             }
             return resultado;
-        }
     }
 }
