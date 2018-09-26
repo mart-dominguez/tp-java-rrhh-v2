@@ -132,6 +132,13 @@ public class PedidoActivity extends AppCompatActivity {
                 elPedido.setEstado(Pedido.Estado.REALIZADO);
 
                 repositorioPedido.guardarPedido(elPedido);
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        // buscar pedidos no aceptados y aceptarlos automaticamente
+                    }
+                };
+
                 elPedido=new Pedido();
                 Intent i = new Intent(PedidoActivity.this,HistorialActivity.class);
                 startActivity(i);
