@@ -1,6 +1,7 @@
 package ar.edu.utn.frsf.isi.dam.laboratorio02;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -73,6 +74,7 @@ public class PedidoActivity extends AppCompatActivity {
 
         Intent intentLlamada = getIntent();
         int idPedido = 0;
+        Log.d(EstadoPedidoReceiver.TAG_APP,"llega "+intentLlamada.getExtras());
         if(intentLlamada.getExtras()!=null){
             idPedido = intentLlamada.getExtras().getInt("idPedidoSeleccionado");
         }
@@ -132,6 +134,35 @@ public class PedidoActivity extends AppCompatActivity {
                 elPedido.setEstado(Pedido.Estado.REALIZADO);
 
                 repositorioPedido.guardarPedido(elPedido);
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.currentThread().sleep(10000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        // buscar pedidos no aceptados y aceptarlos automaticamente
+                        List<Pedido> lista = repositorioPedido.getLista();
+                        for(Pedido p:lista){
+                            if(p.getEstado().equals(Pedido.Estado.REALIZADO)) p.setEstado(Pedido.Estado.ACEPTADO);
+                            Intent intent = new Intent();
+                            intent.setAction("ar.edu.utn.frsf.isi.dam.laboratorio02.ESTADO_ACEPTADO");
+                            intent.putExtra("idPedido",p.getId());
+                            sendBroadcast(intent);
+                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(PedidoActivity.this,"Informacion de pedidos actualizada!",Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                };
+
+                Thread unHilo = new Thread(r);
+                unHilo.start();
+
                 elPedido=new Pedido();
                 Intent i = new Intent(PedidoActivity.this,HistorialActivity.class);
                 startActivity(i);
