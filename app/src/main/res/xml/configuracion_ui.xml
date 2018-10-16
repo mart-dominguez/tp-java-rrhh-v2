@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:id="@+id/prefEsRetirar"
+        android:defaultValue="false"
+        android:key="pref_retirar"
+        android:summary="valor cuando crea un pedido"
+        android:summaryOff="el pedido es para ir al local"
+        android:summaryOn="el pedido es para retirar"
+        android:title="Retirar por defecto"
+        android:visibility="visible" />
+    <EditTextPreference
+        android:id="@+id/prefMailDefecto"
+        android:defaultValue="Default value"
+        android:key="pref_mail_defecto"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="Se usará por defecto"
+        android:title="Correo electronico "
+        android:visibility="visible" />
+</PreferenceScreen>
