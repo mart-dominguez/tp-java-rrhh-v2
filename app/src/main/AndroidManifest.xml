@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ar.edu.utn.frsf.isi.dam.laboratorio02">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -20,6 +21,7 @@
         <activity android:name=".ProductosActivity" />
         <activity android:name=".HistorialActivity" />
         <activity android:name=".ConfiguracionActivity" />
+        <activity android:name=".CategoriaActivity"></activity>
     </application>
 
 </manifest>
