@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import ar.edu.utn.frsf.isi.dam.laboratorio02.dao.CategoriaRest;
 import ar.edu.utn.frsf.isi.dam.laboratorio02.dao.ProductoRepository;
 import ar.edu.utn.frsf.isi.dam.laboratorio02.modelo.Categoria;
 import ar.edu.utn.frsf.isi.dam.laboratorio02.modelo.Producto;
@@ -35,30 +36,46 @@ public class ProductosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_productos);
         productoRepo = new ProductoRepository();
         idProductoSel=0;
-        Categoria[] cats = productoRepo.getCategorias().toArray(new Categoria[0]);
-        categoriasAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,cats);
-        spinerCategorias = (Spinner) findViewById(R.id.cmbProductosCategoria);
-        spinerCategorias.setAdapter(categoriasAdapter);
-        spinerCategorias.setSelection(0);
-        productosAdapter= new ArrayAdapter<>(this,android.R.layout.simple_list_item_single_choice,productoRepo.buscarPorCategoria((Categoria)spinerCategorias.getSelectedItem()));
-        listaProductos = (ListView) findViewById(R.id.lstProductos);
-        listaProductos.setAdapter(productosAdapter);
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                CategoriaRest catRest = new CategoriaRest();
+                Categoria[] cats = catRest.listarTodas().toArray(new Categoria[0]);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        categoriasAdapter = new ArrayAdapter<Categoria>(ProductosActivity.this,android.R.layout.simple_spinner_dropdown_item,cats);
+                        spinerCategorias = (Spinner) findViewById(R.id.cmbProductosCategoria);
+                        spinerCategorias.setAdapter(categoriasAdapter);
+                        spinerCategorias.setSelection(0);
+                        spinerCategorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                productosAdapter.clear();
+                                productosAdapter.addAll(productoRepo.buscarPorCategoria((Categoria)parent.getItemAtPosition(position)));
+                                productosAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                        productosAdapter= new ArrayAdapter<Producto>(ProductosActivity.this,android.R.layout.simple_list_item_single_choice,productoRepo.buscarPorCategoria((Categoria)spinerCategorias.getSelectedItem()));
+                        listaProductos = (ListView) findViewById(R.id.lstProductos);
+                        listaProductos.setAdapter(productosAdapter);
+                    }
+                });
+            }
+        };
+        Thread hiloCargarCombo = new Thread(r);
+        hiloCargarCombo.start();
+
+
 
         edtCantidad = (EditText) findViewById(R.id.edtProdCantidad);
         btnAgregar = (Button) findViewById(R.id.btnProdAddPedido);
-        spinerCategorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                productosAdapter.clear();
-                productosAdapter.addAll(productoRepo.buscarPorCategoria((Categoria)parent.getItemAtPosition(position)));
-                productosAdapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         btnAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
