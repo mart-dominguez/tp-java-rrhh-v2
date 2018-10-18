@@ -13,18 +13,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import ar.edu.utn.frsf.isi.dam.laboratorio02.dao.PedidoRepository;
-import ar.edu.utn.frsf.isi.dam.laboratorio02.dao.ProductoRepository;
+import ar.edu.utn.frsf.isi.dam.laboratorio02.dao.ProductoRepositoryMemory;
 import ar.edu.utn.frsf.isi.dam.laboratorio02.modelo.Pedido;
 import ar.edu.utn.frsf.isi.dam.laboratorio02.modelo.PedidoDetalle;
 import ar.edu.utn.frsf.isi.dam.laboratorio02.modelo.Producto;
@@ -48,7 +45,7 @@ public class PedidoActivity extends AppCompatActivity {
     private Pedido elPedido;
 
     private PedidoRepository repositorioPedido;
-    private ProductoRepository repositorioProducto;
+    private ProductoRepositoryMemory repositorioProducto;
 
 
 
@@ -57,7 +54,7 @@ public class PedidoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedido);
         repositorioPedido = new PedidoRepository();
-        repositorioProducto = new ProductoRepository();
+        repositorioProducto = new ProductoRepositoryMemory();
 
         edtCorreo = (EditText) findViewById(R.id.edtPedidoCorreo) ;
         edtDireccion = (EditText) findViewById(R.id.edtPedidoDireccion) ;

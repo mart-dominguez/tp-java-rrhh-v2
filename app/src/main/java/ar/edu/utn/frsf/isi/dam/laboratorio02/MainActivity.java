@@ -15,6 +15,7 @@ import ar.edu.utn.frsf.isi.dam.laboratorio02.modelo.Pedido;
      private Button btnListaProductos;
      private Button btnConfiguracion;
      private Button btnCategorias;
+     private Button btnAbmProductos;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,15 @@ import ar.edu.utn.frsf.isi.dam.laboratorio02.modelo.Pedido;
              @Override
              public void onClick(View view) {
                  Intent i = new Intent(MainActivity.this, CategoriaActivity.class);
+                 startActivity(i);
+             }
+         });
+
+         btnAbmProductos= (Button) findViewById(R.id.btnAbmProductos);
+         btnAbmProductos.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent i = new Intent(MainActivity.this, GestionProductoActivity.class);
                  startActivity(i);
              }
          });
